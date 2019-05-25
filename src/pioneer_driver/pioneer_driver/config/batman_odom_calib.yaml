@@ -1,0 +1,12 @@
+##### Acceleration parameters ####
+
+trans_accel: 0.5
+trans_decel: 0.5
+rot_accel: 0.0
+rot_decel: 0.0
+
+##### Odometry calibration ####
+
+TicksMM: 152
+#DriftFactor: 0
+#RevCount: 0

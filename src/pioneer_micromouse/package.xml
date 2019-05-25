@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <name>pioneer_micromouse</name>
+  <version>0.0.0</version>
+  <description>Package containing micromouse for SST and MISK</description>
+
+  <maintainer email="p.gajewski94@gmail.com">gajos</maintainer>
+  <author email="p.gajewski94@gmail.com">Paweł Gajewski</author>
+  <url type="website">http://wutrobotics.mchtr.pw.edu.pl</url>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>tf</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>tf</run_depend>
+
+</package>
+

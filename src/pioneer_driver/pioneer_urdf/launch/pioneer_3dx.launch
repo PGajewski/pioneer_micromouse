@@ -1,0 +1,19 @@
+<launch>
+
+  <group ns="$(arg robot_name)">
+
+    <!-- ARGS -->
+    <arg name="robot_name"  doc="Please specify robot name either batman or robin."/>
+
+    <include file="$(find pioneer_urdf)/launch/upload_pioneer3dx.xml"/>
+
+    <node pkg="robot_state_publisher" type="state_publisher" name="state_publisher">
+      <param name="publish_frequency" 	type="double" 		value="30.0"	/>
+      <param name="tf_prefix"   	value="$(arg robot_name)"       	/>
+    </node>
+
+    <!--node pkg="pioneer_urdf" type="pioneer_3dx" name="publisher"/ -->
+
+  </group>
+
+</launch>

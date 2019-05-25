@@ -1,0 +1,64 @@
+<launch>
+
+  <group ns="$(arg robot_name)">
+
+    <!-- ARGS -->
+    <arg name="robot_name"  doc="Please specify robot name either batman or robin."/>
+    <arg name="aria"        doc="Please specify if aria should be launched."/>
+    <arg name="urdf"        doc="Please specify if urdf should be launched."/>
+    <arg name="imu"         doc="Please specify if imu should be launched."/>
+    <arg name="scanner_usb" doc="Please specify if scanner should be launched (ip protocol)."/>
+    <arg name="scanner_ip"  doc="Please specify if scanner should be launched (usb protocol)."/>
+    <arg name="joy"         doc="Please specify if joy should be launched."/>
+    <arg name="joy_control" doc="Please specify if joy control should be launched."/>
+
+    <!-- ODOM CALIB -->
+    <rosparam file="$(find pioneer_driver)/config/batman_odom_calib.yaml" command="load" ns="aria"/>
+
+    <!-- ARIA -->
+    <node name="aria" pkg="rosaria" type="RosAria" if="$(arg aria)">
+      <param name="tf_prefix"   value="$(arg robot_name)"			/>
+      <param name="port"	value="/dev/ttyS0"				/>
+    </node>
+    <node name="transform_base_to_sonar" pkg="tf" type="static_transform_publisher" args="0.0 0 0.0 0 0 0 $(arg robot_name)/base_link $(arg robot_name)/sonar_frame 20" if="$(arg aria)"/>
+
+
+    <!-- URDF -->
+    <include file="$(find pioneer_urdf)/launch/pioneer_3at.launch" if="$(arg urdf)"/>
+
+    <!-- IMU -->
+    <include file="$(find razor_imu_9dof)/launch/razor-pub.launch" if="$(arg imu)">
+      <arg name="frame_id" value="/$(arg robot_name)/base_imu_link"/>
+      <arg name="razor_config_file" value="$(find pioneer_driver)/config/$(arg robot_name)_razor.yaml"/>
+      <arg name="node_name" value="imu"/>
+    </include>
+    <node name="transform_base_to_imu" pkg="tf" type="static_transform_publisher" args="0.12 0.085 0.2 1.5707 3.1415 0 $(arg robot_name)/base_link $(arg robot_name)/base_imu_link 20" if="$(arg imu)"/>
+
+    <!-- SCANNER IP -->
+    <node name="laser" pkg="urg_node" type="urg_node" if="$(arg scanner_ip)">
+      <param name="frame_id" value="/$(arg robot_name)/base_laser_link"/>
+      <param name="ip_address" value="10.0.0.10"/>
+    </node>
+    <node name="transform_base_to_laser" pkg="tf" type="static_transform_publisher" args="0.21 0 0.34 0 0 0 $(arg robot_name)/base_link $(arg robot_name)/base_laser_link 20" if="$(arg scanner_ip)"/>
+
+    <!-- SCANNER USB -->
+    <node name="laser" pkg="urg_node" type="urg_node" if="$(arg scanner_usb)">
+      <param name="frame_id" value="/$(arg robot_name)/base_laser_link"/>
+      <param name="serial_port" value="/dev/ttyACM0"/>
+    </node>
+    <node name="transform_base_to_laser" pkg="tf" type="static_transform_publisher" args="0.21 0 0.34 0 0 0 $(arg robot_name)/base_link $(arg robot_name)/base_laser_link 20" if="$(arg scanner_usb)"/>
+
+    <!-- JOY -->
+    <node name="joy" pkg="joy" type="joy_node" if="$(arg joy)"/>
+
+    <!-- PIONEER MANUAL -->
+    <node name="joy_control" pkg="pioneer_driver" type="pioneer_manual" if="$(arg joy_control)">
+      <param name="robot_name"    value="$(arg robot_name)"/>
+    </node>
+
+    <!-- TF -->
+    <!--node name="add_base_footprint" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_footprint $(arg robot_name)/base_link 20"/-->
+
+  </group>
+
+</launch>

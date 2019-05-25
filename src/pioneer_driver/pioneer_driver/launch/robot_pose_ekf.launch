@@ -1,0 +1,25 @@
+<launch>
+
+  <remap from="odom" to="/batman/aria/pose_with_cov"/>
+  <remap from="imu_data" to="/batman/imu"/>
+
+  <group ns="batman">
+
+    <node name="transform_base_to_imu" pkg="tf" type="static_transform_publisher" args="0.12 0.085 0.2 0 1.5707 0 batman/base_link batman/base_imu_link 20"/>
+
+    <!--node pkg="pioneer_driver" type="pose_with_cov" name="pose_with_cov"/>
+
+    <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="pioneer_ekf">
+      <param name="output_frame" value="odom"/>
+      <param name="freq" value="30.0"/>
+      <param name="sensor_timeout" value="1.0"/>
+      <param name="odom_used" value="true"/>
+      <param name="imu_used" value="false"/>
+      <param name="vo_used" value="false"/>
+      <param name="debug" value="false"/>
+      <param name="self_diagnose" value="false"/>
+    </node -->
+
+  </group>
+
+</launch>

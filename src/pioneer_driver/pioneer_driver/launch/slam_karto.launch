@@ -1,0 +1,15 @@
+<launch>
+
+  <group ns="batman">
+
+    <node pkg="slam_karto" type="slam_karto" name="slam_karto" output="screen">
+      <remap from="scan" to="/batman/scan"/>
+      <param name="base_frame" value="/batman/base_link"/>
+      <param name="odom_frame" value="/batman/odom"/>
+      <param name="map_update_interval" value="2"/>
+      <param name="resolution" value="0.05"/>
+    </node>
+
+  </group>
+
+</launch>

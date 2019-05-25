@@ -1,0 +1,33 @@
+<launch>
+
+  <!--===================================-->
+  <!--============= PARAMS ==============-->
+  <!--===================================-->
+
+  <arg name="robot_name"  doc="Please specify robot name either batman or robin."/>
+
+  <!--===================================-->
+  <!--============ DISCOVERY ============-->
+  <!--===================================-->
+
+  <node name="master_discovery" pkg="master_discovery_fkie" type="master_discovery">
+    <param name="mcast_group" value="224.0.0.1"/>
+  </node>
+
+  <!--===================================-->
+  <!--============== SYNC ===============-->
+  <!--===================================-->
+
+  <rosparam param="master_sync/sync_topics">[
+    /$(arg robot_name)/local_planner/goal
+    /$(arg robot_name)/local_planner/stop
+    /$(arg robot_name)/local_planner/stats
+    /$(arg robot_name)/box_detector/boxes
+    /$(arg robot_name)/initialpose
+    /$(arg robot_name)/scan
+    /$(arg robot_name)/graph
+    /tf
+  ]</rosparam>
+  <node name="master_sync" pkg="master_sync_fkie" type="master_sync"/>
+
+</launch>

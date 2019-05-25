@@ -1,0 +1,58 @@
+<launch>
+
+  <!--===============================================-->
+  <!--=================== PARAMS ====================-->
+  <!--===============================================-->
+
+  <arg name="robot_name"  doc="Please specify robot name either batman or robin."/>
+
+  <remap from="/$(arg robot_name)/map" to="/map"/>
+
+  <!--===============================================-->
+  <!--================= MULTIMASTER =================-->
+  <!--===============================================-->
+
+  <include file="$(find pioneer_driver)/launch/multimaster.launch">
+    <arg name="robot_name" value="$(arg robot_name)"/>
+  </include>
+
+  <!--===============================================-->
+  <!--================ ROBOT NAMESPACE ==============-->
+  <!--===============================================-->
+
+  <group ns="$(arg robot_name)">
+
+    <!--===================================-->
+    <!--=========== MAP LOADER ============-->
+    <!--===================================-->
+
+    <node name="borkowski_t2m" pkg="borkowski_t2m" type="borkowski_t2m"/>
+
+    <!--===================================-->
+    <!--============== AMCL ===============-->
+    <!--===================================-->
+
+    <include file="$(find pioneer_driver)/launch/amcl.launch">
+      <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+
+    <!--===================================-->
+    <!--========== LOCAL PLANNER ==========-->
+    <!--===================================-->
+
+    <node name="local_planner" pkg="local_planner" type="local_planner">
+      <param name="base_frame_id" value="/$(arg robot_name)/base_link"/>
+    </node>
+
+    <!--===================================-->
+    <!--========== BOX DETECTOR ===========-->
+    <!--===================================-->
+
+    <node name="box_detector" pkg="pioneer_box_detector" type="pioneer_box_detector">
+      <param name="allow_false_detection" value="true"/>
+      <param name="cameras_count" value="1.0"/>
+    </node>
+
+  </group>
+
+</launch>

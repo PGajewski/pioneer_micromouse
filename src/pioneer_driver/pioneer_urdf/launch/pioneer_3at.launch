@@ -1,0 +1,13 @@
+<launch>
+	<include file="$(find pioneer_urdf)/launch/upload_pioneer3at.xml"/>
+
+  	<node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+
+    	<param name="publish_frequency" type="double" value="30.0"/>
+
+    	<param name="tf_prefix" type="string" value=""/>
+  	</node>
+
+	<node pkg="pioneer_urdf" type="pioneer_3at" name="publisher"/>
+	
+</launch>

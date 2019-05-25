@@ -1,0 +1,48 @@
+<launch>
+
+  <!--===============================================-->
+  <!--=================== PARAMS ====================-->
+  <!--===============================================-->
+
+  <arg name="robot_name"  doc="Please specify robot name either batman or robin."/>
+
+  <remap from="/$(arg robot_name)/map" to="/map"/>
+
+  <!--===================================-->
+  <!--=========== MAP LOADER ============-->
+  <!--===================================-->
+
+  <node name="borkowski_t2m" pkg="borkowski_t2m" type="borkowski_t2m"/>
+
+  <!--===============================================-->
+  <!--================ ROBOT NAMESPACE ==============-->
+  <!--===============================================-->
+
+  <group ns="$(arg robot_name)">
+
+    <!--===================================-->
+    <!--============== AMCL ===============-->
+    <!--===================================-->
+
+    <include file="$(find pioneer_driver)/launch/amcl.launch">
+      <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+
+    <!--===================================-->
+    <!--========== LOCAL PLANNER ==========-->
+    <!--===================================-->
+
+    <node name="local_planner" pkg="local_planner" type="local_planner">
+      <param name="base_frame_id" value="/$(arg robot_name)/base_link"/>
+      <param name="world_frame_id" value="/$(arg robot_name)/odom"/>
+    </node>
+
+    <!--===================================-->
+    <!--========= GLOBAL PLANNER ==========-->
+    <!--===================================-->
+
+    <node name="global_planner" pkg="global_planner" type="global_planner">
+    </node>
+  </group>
+
+</launch>
