@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pioneer_micromouse)
-add_compile_options(-std=c++17)
 
 # Catkin components
 find_package(catkin REQUIRED COMPONENTS
@@ -22,10 +21,8 @@ catkin_package(
 # Includes
 include_directories(
   ${catkin_INCLUDE_DIRS}
-  include/
 )
 
-file( GLOB dijkstra_SRC src/algorithm/dijkstra/*.cpp )
 # Exe & linking (pioneer_control)
-add_executable(pioneer_control src/pioneer_control.cpp src/map.cpp ${dijkstra_SRC} )
+add_executable(pioneer_control src/pioneer_control.cpp )
 target_link_libraries(pioneer_control ${catkin_LIBRARIES})
